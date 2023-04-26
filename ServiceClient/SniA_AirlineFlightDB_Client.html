@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>RESTful JSON-PHP Web Service Client</title>
+ </head>
+<body>
+<h2>
+Please enter SniA_AirlineFlight name to search for in Database Emulator
+
+<p>
+		<form id="target" action="" method="post">
+			SniA_AirlineFlight: <input type="text" id="airlineName" name ="airlineName">&nbsp
+			<input type="submit" value="Submit">
+		</form>
+	</p>
+	<br />
+
+-----------------------------------------------------------------------------	
+	<br /><br />
+
+SniA_AirlineFlight information returned from Database Emulator web service:
+	<p>
+		SniA_AirlineFlight Information: <span id="aSniA_AirlineFlight"></span>
+		<br />
+		SniA_AirlineFlight Name: <span id="aAirlineName"></span>
+		<br />
+		SniA_AirlineFlight Flight Number: <span id="aFlightNumber"></span>
+		<br />
+		SniA_AirlineFlight Ticket Price: <span id="aTicketPrice"></span>
+		<br />
+		SniA_AirlineFlight Seat Number: <span id="aSeatNumber"></span>
+	</p>
+	 
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+
+<script>
+
+$('#target').submit(function(event) {
+
+//alert("inside JS function");
+
+	event.preventDefault();
+	
+	var aSniA_AirlineFlight = $('#airlineName').val();
+					
+	$.ajax({
+		type: 'POST',
+		url: '../ServiceProvider/SniA_AirlineFlight_API.php',
+		data: 'sniA_AirlineFlight=' + aSniA_AirlineFlight, 
+		dataType: 'json',
+		encode: true
+	})
+	.done(function(data) {
+		$('#aSniA_AirlineFlight').text(data.sniA_AirlineFlightString);
+		$('#aAirlineName').text(data.airlineName);
+		$('#aFlightNumber').text(data.flightNumber);
+		$('#aTicketPrice').text(data.ticketPrice);
+		$('#aSeatNumber').text(data.seatNumber);
+	})
+	.fail(function() {
+		$('#result').text('An error occurred. Please contact your Web Service Administrator.');
+	});
+
+	});
+
+</script>
+</body>
+</html>
